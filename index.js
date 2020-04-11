@@ -35,10 +35,10 @@ app.post("/webhook", function (request, response) {
         var city = agent.parameters.City;
         console.log(city)
         agent.context.get('cityName')
-        console.log("agent.context", agent.context, "request.context is", agent.body.queryResult.outputContexts)
         return new Promise((resolve, reject) => {
             var newRequest = require('request');
             newRequest(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=0f7c8b20f4669c9b103c7b80a2ec1e78`, function (error, response, body) {
+                console.log("agent.context", agent.context, "body near context is ", body)
                 if (!error) {
 
                     var data = JSON.parse(body)
@@ -73,7 +73,7 @@ app.post("/webhook", function (request, response) {
             }
         });
         var uCity = agent.context.uCity;
-        console.log(uCity)
+        console.log(uCity, "uCity in context is")
         return new Promise((resolve, reject) => {
             var newRequest = require('request');
             newRequest(`https://api.openweathermap.org/data/2.5/weather?q=${uCity}&appid=0f7c8b20f4669c9b103c7b80a2ec1e78`, function (error, response, body) {
