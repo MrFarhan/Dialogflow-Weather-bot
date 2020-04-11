@@ -34,7 +34,13 @@ app.post("/webhook", function (request, response) {
     function showWeather(agent) {
         var city = agent.parameters.City;
         console.log(city)
-        agent.context.get('cityName')
+        agent.context.set({
+            'name': 'cityName',
+            'lifespan': 5,
+            'parameters': {
+                uCity: agent.parameters.City,
+            }
+        });
         return new Promise((resolve, reject) => {
             var newRequest = require('request');
             newRequest(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=0f7c8b20f4669c9b103c7b80a2ec1e78`, function (error, response, body) {
@@ -65,13 +71,7 @@ app.post("/webhook", function (request, response) {
 
     function rain(agent) {
 
-        agent.context.set({
-            'name': 'cityName',
-            'lifespan': 5,
-            'parameters': {
-                uCity: agent.parameters.City,
-            }
-        });
+        agent.context.get('cityName')
         var uCity = agent.context.uCity;
         console.log(uCity, "uCity in context is")
         return new Promise((resolve, reject) => {
